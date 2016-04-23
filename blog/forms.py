@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Post, Comment
+from .models import Post, Comment, Contact
 
 class PostForm(forms.ModelForm):
 
@@ -14,7 +14,10 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ('author', 'text',)
 
-class ContactForm(forms.Form):
-    from_email = forms.EmailField(required=True)
-    subject = forms.CharField(required=True)
-    message = forms.CharField(widget=forms.Textarea)
+class ContactForm(forms.ModelForm):
+    # from_email = forms.EmailField(required=True)
+    # subject = forms.CharField(required=True)
+    # message = forms.CharField(widget=forms.Textarea)
+    class Meta:
+    	model = Contact
+    	fields = ('from_email', 'subject', 'message')

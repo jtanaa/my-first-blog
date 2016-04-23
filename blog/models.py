@@ -35,3 +35,14 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text
+
+# This model is created to creat ModelForm, so that to store the contacter information.
+class Contact(models.Model):
+    from_email = models.EmailField()
+    subject = models.CharField(max_length=200)
+    message = models.TextField()
+    created_date = models.DateTimeField(
+        default=timezone.now)
+
+    def __str__(self):
+        return self.from_email

@@ -2,11 +2,10 @@
 
 {% block content %}
           <h1>Contact Me</h1>
-          <div class="lead">he world has taken "concrete" steps to prevent nuclear terrorism, he told the Nuclear Security Summit in Washington.
-          But the so-called Islamic State (IS) obtaining a nuclear weapon is "one of the greatest threats to global security," he added.</div>
+          <div class="lead">I am willing to receive any of your suggestions about this website, and any question relative to the recruitment/hiring. Please write your comment below and I will reply your mail ASAP.</div>
           <hr>
           <h3>Send me Email</h3>
-          <form role="form" action="" method="post">{% csrf_token %}
+          <form role="form" action="{% url 'contact' %}" method="post">{% csrf_token %}
             {{ form.as_p }}
             <button type="submit">Submit</button>
           </form>

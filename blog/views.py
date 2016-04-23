@@ -1,11 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post, Comment
+from .models import Post, Comment, Contact
 from django.utils import timezone
 from .forms import PostForm, CommentForm, ContactForm
 from django.contrib.auth.decorators import login_required
 from django.template.loader import get_template
 from django.core.mail import send_mail, BadHeaderError
 from django.template import Context
+from django.http import HttpResponse
 
 
 # Create your views here.
@@ -13,6 +14,11 @@ from django.template import Context
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
     return render(request, 'mywebsite/posts.html', {'posts': posts})
+
+@login_required
+def contact_results(request):
+    results = Contact.objects.order_by('created_date')
+    return render(request, 'mywebsite/contact_result.html', {'results': results})
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
@@ -31,6 +37,9 @@ def post_detail(request, pk):
 @login_required
 def post_new(request):
     if request.method == "POST":
+        # print(request.scheme,'||', request.body, '||',request.path, '||',
+        #     request.encoding, '||',request.POST,'||',request.read()
+        #     ) # this line of code is used to check the reqest object this view received.
         form = PostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
@@ -39,10 +48,9 @@ def post_new(request):
             #store a drafts and published it later
             post.save()
             return redirect('post_detail', pk=post.pk)
-            #return redirect('post_detail', pk=1)
     else:
         form = PostForm()
-    return render(request, 'blog/post_edit.html', {'form': form})
+    return render(request, 'mywebsite/post_edit.html', {'form': form})
 
 @login_required
 def post_edit(request, pk):
@@ -57,7 +65,7 @@ def post_edit(request, pk):
             return redirect('post_detail', pk=post.pk)
     else:
         form = PostForm(instance=post)
-    return render(request, 'blog/post_edit.html', {'form': form})
+    return render(request, 'mywebsite/post_edit.html', {'form': form})
 
 @login_required
 def post_draft_list(request):
@@ -108,18 +116,28 @@ def projects(request):
 def contact(request):
     if request.method == 'GET':
         form = ContactForm()
+        return render(request, "mywebsite/contact.html", {'form': form})
     else:
         form = ContactForm(request.POST)
         if form.is_valid():
-            subject = form.cleaned_data['subject']
-            from_email = form.cleaned_data['from_email']
-            message = form.cleaned_data['message']
-            try:
-                send_mail(subject, message, from_email, ['tj37100022@gmail.com'])
-            except BadHeaderError:
-                return HttpResponse('Invalid header found.')
-            return redirect('contact')
-    return render(request, "mywebsite/contact.html", {'form': form})
+            contact = form.save(commit=False)
+            contact.save()
 
-def thanks(request):
+            # try:# these code are to be done for automatically sending emaill when a contact is received.
+            #     send_mail(subject, message, from_email, ['tj37100022@gmail.com'])
+            # except BadHeaderError:
+            #     return HttpResponse('Invalid header found.')
+            return redirect('thanks')
+
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            #post.published_date = timezone.now() # adding this line of code to let you 
+            #store a drafts and published it later
+            post.save()
+            return redirect('post_detail', pk=post.pk)
+
+
+def thanks(request):# should I just incoporate this into view.contact?
     return HttpResponse('Thank you for your message.')

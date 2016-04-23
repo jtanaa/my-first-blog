@@ -6,6 +6,8 @@ from django.views.generic import TemplateView
 urlpatterns = [
     url(r'^$', views.post_list, name = 'post_list'),
     url(r'^contact/$', views.contact, name = 'contact'),
+    url(r'^contact/thanks/$', views.thanks, name = 'thanks'),
+    url(r'^contact/results/$', views.contact_results, name = 'contact_results'),
     url(r'^projects/$', TemplateView.as_view(template_name="mywebsite/projects.html"),name='projects'),
     url(r'^about/$', TemplateView.as_view(template_name="mywebsite/about.html"),name='about'),
     url(r'^post/(?P<pk>\d+)/$', views.post_detail, name='post_detail'), 
