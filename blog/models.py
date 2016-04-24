@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.template.defaultfilters import slugify
 
 
 class Post(models.Model):
@@ -21,6 +22,16 @@ class Post(models.Model):
     def approved_comments(self):
         return self.comments.filter(approved_comment=True)
 
+#The following two class/function are used to uploading image into blog posts.
+def get_image_filename(instance, filename):
+    title = instance.post.title
+    slug = slugify(title)
+    return "post_images/%s-%s" % (slug, filename)  
+
+class Images(models.Model):
+    post = models.ForeignKey(Post, default=None)
+    image = models.ImageField(upload_to=get_image_filename,
+                              verbose_name='Image', )
 
 class Comment(models.Model):
     post = models.ForeignKey('blog.Post', related_name='comments')
