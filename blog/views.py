@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post, Comment, Contact
 from django.utils import timezone
-from .forms import PostForm, CommentForm, ContactForm
+from .forms import PostForm, CommentForm, ContactForm, UploadFileForm
 from django.contrib.auth.decorators import login_required
 from django.template.loader import get_template
 from django.core.mail import send_mail, BadHeaderError
@@ -40,7 +40,7 @@ def post_new(request):
         # print(request.scheme,'||', request.body, '||',request.path, '||',
         #     request.encoding, '||',request.POST,'||',request.read()
         #     ) # this line of code is used to check the reqest object this view received.
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES or None)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
@@ -56,7 +56,7 @@ def post_new(request):
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
-        form = PostForm(request.POST, instance=post)
+        form = PostForm(request.POST, request.FILES or None , instance=post)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user

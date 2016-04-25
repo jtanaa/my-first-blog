@@ -8,6 +8,9 @@
               <header><h1>{{ post.title }}</h1></header>
             {% endif %}
             <footer><small>{{ post.published_date }}</small></footer>
+            {% if post.image %}
+            <img src="{{ post.image.url }}" class='image-responsive'>
+            {% endif %}
             <div class="lead">{{ post.text|linebreaks }}
             </div>
             <footer>

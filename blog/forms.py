@@ -6,7 +6,7 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ('title', 'text',)
+        fields = ('title', 'text', 'image',)
 
 class CommentForm(forms.ModelForm):
 
@@ -21,3 +21,7 @@ class ContactForm(forms.ModelForm):
     class Meta:
     	model = Contact
     	fields = ('from_email', 'subject', 'message')
+
+class UploadFileForm(forms.Form):
+    title = forms.CharField(max_length=50)
+    file = forms.FileField()

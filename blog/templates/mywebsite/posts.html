@@ -5,6 +5,9 @@
           <article>
             <header><h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2></header>
             <footer><small>Post Date: {{ post.published_date }} Comments: {{ post.approved_comments.count }}</small></footer>
+            {% if post.image %}
+            <img src="{{ post.image.url }}" class='image-responsive'>
+            {% endif %}
             <div class="lead">{{ post.text|linebreaks }}<a href="post_detail.html">Read More..</a>
             </div>
             <footer>
