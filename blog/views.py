@@ -7,13 +7,27 @@ from django.template.loader import get_template
 from django.core.mail import send_mail, BadHeaderError
 from django.template import Context
 from django.http import HttpResponse
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 
 def post_list(request):
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
+    all_posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
+    paginator = Paginator(all_posts, 5) # Show 5 posts per page
+    
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        posts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        posts = paginator.page(paginator.num_pages)
+
     return render(request, 'mywebsite/posts.html', {'posts': posts})
+
+
 
 @login_required
 def contact_results(request):
