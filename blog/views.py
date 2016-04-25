@@ -36,29 +36,17 @@ def post_detail(request, pk):
 
 @login_required
 def post_new(request):
-    ImageFormSet = modelformset_factory(Images, form=ImageForm, extra=3)
     if request.method == "POST":
         # print(request.scheme,'||', request.body, '||',request.path, '||',
         #     request.encoding, '||',request.POST,'||',request.read()
         #     ) # this line of code is used to check the reqest object this view received.
         form = PostForm(request.POST)
-        formset = ImageFormSet(request.POST, request.FILES,
-                       queryset=Images.objects.none())
-        if form.is_valid() and formset.is_valid():
+        if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
             #post.published_date = timezone.now() # adding this line of code to let you 
             #store a drafts and published it later
             post.save()
-
-            for form in formset.cleaned_data:
-                image = form['image']
-                photo = Images(post=post_form, image=image)
-                photo.save()
-            messages.success(request,
-                             "Yeeew,check it out on the home page!")
-            return HttpResponseRedirect("/")
-
             return redirect('post_detail', pk=post.pk)
     else:
         form = PostForm()
