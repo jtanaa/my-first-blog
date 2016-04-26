@@ -3,14 +3,24 @@
 {% block content %}
           <article>
             {% if user.is_authenticated %}
-              <header><h1>{{ post.title }}</h1></header><a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+              <header>
+              <h1>{{ post.title }}</h1>
+              <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+              <a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+              </header>
             {% else %}
               <header><h1>{{ post.title }}</h1></header>
             {% endif %}
-            <footer><small>{{ post.published_date }}</small></footer>
+            {% if post.published_date %}
+              <footer><small>Post Date: {{ post.published_date }}</small></footer>
+            {% else %}
+            <a class="btn btn-default" href="{% url 'blog.views.post_publish' pk=post.pk %}">Publish</a>
+            {% endif %}
+
             {% if post.image %}
             <img src="{{ post.image.url }}" class='image-responsive'>
             {% endif %}
+
             <div class="lead">{{ post.text|linebreaks }}
             </div>
             <footer>
