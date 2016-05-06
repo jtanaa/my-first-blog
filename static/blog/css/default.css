@@ -1,0 +1,19 @@
+body{
+	margin-bottom: 100px;
+}
+
+.box {
+	border:1px red dotted;
+}
+
+.container{
+	max-width: 1000px;
+}
+
+.profile aside ul {
+	padding: 0px;	
+}
+
+.profile {
+	margin-right: 40px;
+}

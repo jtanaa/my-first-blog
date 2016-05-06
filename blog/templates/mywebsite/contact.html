@@ -1,0 +1,24 @@
+{% extends 'mywebsite/base.html' %}
+
+{% block content %}
+          <h1>Contact Me</h1>
+          <div class="lead">I am willing to receive any of your suggestions about this website, and any question relative to the recruitment/hiring. Please write your comment below and I will reply your mail ASAP.
+          ##Updates 4/24/2016: The contact me function had some glitches I have't noticed until 4/24/2016. So any message sent before it is actually been missed. Sorry for the inconvenience.</div>
+          <hr>
+          <h3>Send me Email</h3>
+          <form role="form" action="{% url 'contact' %}" method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+          </form>
+<!--             <p>
+              <textarea class="form-control" placeholder="Message" id="Message" required autofocus="false"></textarea>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Full name">
+                </div>
+                <div class="form-group">
+                  <input type="email" class="form-control" placeholder="Email">
+                </div>
+                <button type="submit" class="btn btn-primary">Send Message</button>
+            </p>
+          </form> -->
+{% endblock %}

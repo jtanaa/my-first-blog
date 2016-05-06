@@ -1,0 +1,93 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html xmlns:wb="http://open.weibo.com/wb" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Tan Jun's WebSite</title>
+
+    <!-- Bootstrap -->
+<!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static "blog/css/default.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "blog/css/posts.css" %}">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+  </head>
+  <body>
+
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{% url 'post_list' %}">My WebSite</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li><a href="{% url 'post_list' %}">Posts </a></li>
+            <li><a href="{% url 'projects' %}">Projects </a></li>
+            <li><a href="{% url 'about' %}">About </a></li>
+            <li><a href="{% url 'contact' %}">Contact </a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+          {% if user.is_authenticated %}
+            <li><a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a></li>
+            <li><a href="{% url 'post_draft_list' %}" class="top-menu"><span class="glyphicon glyphicon-edit"></span></a></li>
+            <li><p class="top-menu">Hello {{ user.username }}<small>(<a href="{% url 'logout' %}">Log out</a>)</small></p></li>
+        {% else %}
+            <a href="{% url 'login' %}" class="top-menu">Log in</span></a>
+        </li>
+        {% endif %}
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+
+    <div class="container"> 
+      <div class="row">
+        <div class="col-md-3 profile">
+          <aside>
+              <img src="{% static "blog/img/dog.jpg" %}" alt="dog image" class="img-circle">
+              <h4>Tan Jun</h4>
+              <p>Green Building Consultant & Newbie Web Developer</p>
+              <iframe src="https://ghbtns.com/github-btn.html?user=jtanaa&repo=my-first-blog&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+              <hr>
+              <p>Share this page:</p>
+              <ul class="list-inline">
+                <li><img src="{% static "blog/img/social_icons/email.png" %}"></li>
+                <li><img src="{% static "blog/img/social_icons/facebook.png" %}"></li>
+                <li><img src="{% static "blog/img/social_icons/googleplus.png" %}"></li>
+                <li><img src="{% static "blog/img/social_icons/linkedin.png" %}"></li>
+                <li><img src="{% static "blog/img/social_icons/twitter.png" %}"></li>
+              </ul>
+            </aside>
+        </div>
+        <div class="col-md-8">
+            {% block content %}
+            {% endblock %}
+      </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+  </body>
+</html>

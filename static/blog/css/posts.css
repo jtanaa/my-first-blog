@@ -1,0 +1,27 @@
+.row header h2 {
+	margin-bottom: 0px;
+}
+
+.row footer {
+	margin-bottom: 10px;
+	color:#000;
+}
+
+.lead {
+	margin-bottom:10px;
+}
+
+/*below are css for post_detail.html page*/
+
+.comments .row .col-md-1{
+	color:gray;
+	font-size:20px;
+}
+
+form h3 {
+	margin-top:0px;
+}
+
+#Message {
+	height:100px;
+}
