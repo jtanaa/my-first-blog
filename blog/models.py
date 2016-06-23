@@ -56,3 +56,17 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.from_email
+
+#Ecotect comparison app model
+def ecotect_file_location(instance, filename): #The function is to tell the model where to store the txt file.
+    return "ecotect/%s"%(filename)
+
+class ecotect(models.Model):
+    user_name = models.CharField(max_length=200)
+    image = models.ImageField(upload_to = ecotect_file_location,
+        null=True,
+        blank=False, 
+    )
+
+    def __str__(self):
+        return self.user_name
