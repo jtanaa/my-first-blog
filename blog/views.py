@@ -15,6 +15,7 @@ from django.core.files import File
 from django.conf import settings
 import re
 from .ecotect import ecotect_comparison, handle_uploaded_file
+import os
 
 # Create your views here.
 
@@ -169,10 +170,11 @@ def ecotect(request):
     if request.method == 'POST':
         form = EcotectForm(request.POST, request.FILES)
         if form.is_valid():
-            handle_uploaded_file(request.FILES['docfile1'],'media/ecotect/900.txt')
-            handle_uploaded_file(request.FILES['docfile2'],'media/ecotect/1500.txt')
-            PATH_1 = 'media/ecotect/900.txt'
-            PATH_2 = 'media/ecotect/1500.txt'
+            PATH_1 = os.path.join(os.path.dirname(__file__), '..\media\ecotect\900.txt')
+            print(PATH_1)
+            PATH_2 = os.path.join(os.path.dirname(__file__), '..\media\ecotect\\1500.txt')
+            handle_uploaded_file(request.FILES['docfile1'],PATH_1)
+            handle_uploaded_file(request.FILES['docfile2'],PATH_2)
             ecotect_comparison(PATH_1,PATH_2)
             return HttpResponseRedirect('../media/ecotect/result.txt')
     else:
