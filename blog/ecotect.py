@@ -78,7 +78,7 @@ def ecotect_comparison(PATH_1, PATH_2):
                 output[row][column] = 0.5
 
     #Write the output list into a new file result.txt
-    with open(os.path.join(os.path.dirname(__file__), '..\media\ecotect\\result.txt'), 'w+', encoding='utf-8') as file:
+    with open(os.path.join(os.path.dirname(__file__),'..' ,'media','ecotect','result.txt'), 'w+', encoding='utf-8') as file:
         for i in range(5): #Write the heading information into the file
             file.write(str(heading_1[i]))
         for row in range(ROW):#Write data information into the file

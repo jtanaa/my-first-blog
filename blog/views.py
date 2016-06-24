@@ -170,9 +170,9 @@ def ecotect(request):
     if request.method == 'POST':
         form = EcotectForm(request.POST, request.FILES)
         if form.is_valid():
-            PATH_1 = os.path.join(os.path.dirname(__file__), '..\media\ecotect\900.txt')
+            PATH_1 = os.path.join(os.path.dirname(__file__),'..','media','ecotect','900.txt')
             print(PATH_1)
-            PATH_2 = os.path.join(os.path.dirname(__file__), '..\media\ecotect\\1500.txt')
+            PATH_2 = os.path.join(os.path.dirname(__file__), '..','media','ecotect','1500.txt')
             handle_uploaded_file(request.FILES['docfile1'],PATH_1)
             handle_uploaded_file(request.FILES['docfile2'],PATH_2)
             ecotect_comparison(PATH_1,PATH_2)
