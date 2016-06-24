@@ -25,3 +25,19 @@ class ContactForm(forms.ModelForm):
 class UploadFileForm(forms.Form):
     title = forms.CharField(max_length=50)
     file = forms.FileField()
+'''
+class EcotectForm(forms.Form):
+    ecotect_file = forms.FileField(
+        label='Select a file',
+        help_text='max. 1 megabytes'
+    )
+'''
+class EcotectForm(forms.Form):
+    docfile1 = forms.FileField(
+        label='Choose the first ecotect result file',
+        help_text='max. 1 megabytes'
+    )
+    docfile2 = forms.FileField(
+        label='Choose the second ecotect result file',
+        help_text='max. 1 megabytes'
+    )

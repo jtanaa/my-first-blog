@@ -1,0 +1,27 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <body>
+
+        <!-- Upload form. Note enctype attribute! -->
+        <form action="{% url 'ecotect' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <p>{{ form.non_field_errors }}</p>
+            <p>{{ form.docfile1.label_tag }} {{ form.docfile1.help_text }}</p>
+            <p>
+                {{ form.docfile1.errors }}
+                {{ form.docfile1 }}
+            </p>
+            <p>{{ form.non_field_errors }}</p>
+            <p>{{ form.docfile2.label_tag }} {{ form.docfile2.help_text }}</p>
+            <p>
+                {{ form.docfile2.errors }}
+                {{ form.docfile2 }}
+            </p>
+            <p><input type="submit" value="Upload" /></p>
+        </form>
+    </body>
+
+{% endblock %}
+
+

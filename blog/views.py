@@ -1,13 +1,20 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, render_to_response
 from .models import Post, Comment, Contact
 from django.utils import timezone
-from .forms import PostForm, CommentForm, ContactForm, UploadFileForm
+from .forms import PostForm, CommentForm, ContactForm, UploadFileForm, EcotectForm
 from django.contrib.auth.decorators import login_required
 from django.template.loader import get_template
+from django.template import RequestContext
 from django.core.mail import send_mail, BadHeaderError
 from django.template import Context
 from django.http import HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
+from django.core.files import File
+from django.conf import settings
+import re
+from .ecotect import ecotect_comparison, handle_uploaded_file
 
 # Create your views here.
 
@@ -155,3 +162,27 @@ def contact(request):
 
 def thanks(request):# should I just incoporate this into view.contact?
     return HttpResponse('Thank you for your message.')
+
+
+def ecotect(request):
+    # Handle file upload
+    if request.method == 'POST':
+        form = EcotectForm(request.POST, request.FILES)
+        if form.is_valid():
+            handle_uploaded_file(request.FILES['docfile1'],'media/ecotect/900.txt')
+            handle_uploaded_file(request.FILES['docfile2'],'media/ecotect/1500.txt')
+            PATH_1 = 'media/ecotect/900.txt'
+            PATH_2 = 'media/ecotect/1500.txt'
+            ecotect_comparison(PATH_1,PATH_2)
+            return HttpResponseRedirect('../media/ecotect/result.txt')
+    else:
+        form = EcotectForm() # A empty, unbound form
+
+
+
+    # Render list page with the documents and the form
+    return render_to_response(
+        'mywebsite/ecotect.html',
+        {'form': form},
+        context_instance=RequestContext(request)
+    )
