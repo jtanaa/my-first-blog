@@ -2,22 +2,24 @@
 
 {% block content %}
           {% for post in posts %}
-          <article>
-            <header><h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2></header>
-            <footer><small>Post Date: {{ post.published_date }} Comments: {{ post.approved_comments.count }}</small></footer>
-            {% if post.image %}
-            <img src="{{ post.image.url }}" class='image-responsive'>
-            {% endif %}
-            <div class="lead">{{ post.text|linebreaks }}<a href="post_detail.html">Read More..</a>
-            </div>
-            <footer>
-              <span class="label label-default">Default</span>
-              <span class="label label-default">Default</span>
-              <span class="label label-default">Default</span>
-              <span class="label label-default">Default</span>
-            </footer>
-          </article>
+
+            <article>
+              <header><h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2></header>
+              <footer><small>Post Date: {{ post.published_date }} Comments: {{ post.approved_comments.count }}</small></footer>
+              {% if post.image %}
+              <img src="{{ post.image.url }}" class='img-responsive'>
+              {% endif %}
+              <div class="lead" style="word-break:break-word;">{{ post.text|linebreaks|truncatechars_html:100 }}<a href="{% url 'post_detail' pk=post.pk %}">Read More</a>
+              </div>
+              <footer>
+                <span class="label label-default">Default</span>
+                <span class="label label-default">Default</span>
+                <span class="label label-default">Default</span>
+                <span class="label label-default">Default</span>
+              </footer>
+            </article>
                     <hr>
+
           {% endfor %}
 
 
