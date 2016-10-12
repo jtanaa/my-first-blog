@@ -23,7 +23,7 @@ def post_list(request):
     all_posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
     paginator = Paginator(all_posts, 5) # Show 5 posts per page
     
-    page = request.GET.get('page')
+    page = request.GET.get('page')#The page variable is get from the url information.
     try:
         posts = paginator.page(page)
     except PageNotAnInteger:
