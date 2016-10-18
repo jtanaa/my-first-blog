@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response
 from .models import Post, Comment, Contact
 from django.utils import timezone
-from .forms import PostForm, CommentForm, ContactForm, UploadFileForm, EcotectForm
+from .forms import PostForm, CommentForm, ContactForm, EcotectForm
 from django.contrib.auth.decorators import login_required
 from django.template.loader import get_template
 from django.template import RequestContext
@@ -51,7 +51,7 @@ def post_detail(request, pk): #the parameter pk is extracted from user requested
             comment.post = post
             comment.approve()
             comment.save()
-            return redirect('blog.views.post_detail', pk=post.pk)
+            return redirect('post_detail', pk=post.pk)
     else:
         form = CommentForm()
         return render(request, 'mywebsite/post_detail.html', {'post': post,'form': form})
@@ -144,25 +144,28 @@ def contact(request):
         if form.is_valid():
             contact = form.save(commit=False)
             contact.save()
-
-            # try:# these code are to be done for automatically sending emaill when a contact is received.
-            #     send_mail(subject, message, from_email, ['tj37100022@gmail.com'])
-            # except BadHeaderError:
-            #     return HttpResponse('Invalid header found.')
+            subject = form.cleaned_data['subject']
+            message = form.cleaned_data['message']
+            from_email = form.cleaned_data['from_email']
+            try:# these code are to be done for automatically sending emaill when a contact is received.
+                send_mail(subject, message, from_email, ['tj37100022@gmail.com'])
+            except BadHeaderError:
+                return HttpResponse('Invalid header found.')
             return redirect('thanks')
 
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            #post.published_date = timezone.now() # adding this line of code to let you 
-            #store a drafts and published it later
-            post.save()
-            return redirect('post_detail', pk=post.pk)
+        # form = PostForm(request.POST)
+        # if form.is_valid():
+        #     post = form.save(commit=False)
+        #     post.author = request.user
+        #     #post.published_date = timezone.now() # adding this line of code to let you 
+        #     #store a drafts and published it later
+        #     post.save()
+        #     return redirect('post_detail', pk=post.pk)
 
 
 def thanks(request):# should I just incoporate this into view.contact?
-    return HttpResponse('Thank you for your message.')
+    #return HttpResponse('Thank you for your message.')
+    return render(request, 'mywebsite/thanks.html', {})
 
 
 def ecotect(request):
@@ -179,9 +182,6 @@ def ecotect(request):
             return HttpResponseRedirect('../media/ecotect/result.txt')
     else:
         form = EcotectForm() # A empty, unbound form
-
-
-
     # Render list page with the documents and the form
     return render_to_response(
         'mywebsite/ecotect.html',

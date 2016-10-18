@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog',
     'polls',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE_CLASSES = [

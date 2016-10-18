@@ -2,7 +2,7 @@ from django import forms
 
 from .models import Post, Comment, Contact
 
-class PostForm(forms.ModelForm):
+class PostForm(forms.ModelForm):# There is model form and form form in Django.
 
     class Meta:
         model = Post
@@ -21,10 +21,11 @@ class ContactForm(forms.ModelForm):
     class Meta:
     	model = Contact
     	fields = ('from_email', 'subject', 'message')
-
+'''
 class UploadFileForm(forms.Form):
     title = forms.CharField(max_length=50)
     file = forms.FileField()
+'''
 '''
 class EcotectForm(forms.Form):
     ecotect_file = forms.FileField(

@@ -1,9 +1,90 @@
 {% extends 'mywebsite/base.html' %}
 
 {% block content %}
-    <h1>New post</h1>
+
+<!--     <h1>New post</h1>
     <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="save btn btn-default">Save</button>
-    </form>
+    </form> -->
+<!-- 
+<h1>New post</h1>
+<form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+  <div class="form-group">
+    <label for="id_{{ form.title }}">Post Title</label>
+    <input type="email" class="form-control" id="id_{{ form.title }}">
+  </div>
+  <div class="form-group">
+    <label for="exampleTextarea">Example textarea</label>
+    <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+  </div>
+  <div class="form-actions">
+        <button type="submit" class="btn btn-primary" >Submit</button>
+  </div>
+</form> -->
+
+
+{% load i18n widget_tweaks %}
+<h1>New post</h1>
+<form class="form-horizontal" role="form" action="." method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in form %}
+        {% if field.errors %}
+            <div class="form-group has-error">
+                <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                <div class="">
+                    {{ field|attr:"class:form-control" }}
+                    <span class="help-block">
+                        {% for error in  field.errors %}{{ error }}{% endfor %}
+                    </span>
+                </div>
+            </div>
+        {% else %}
+            <div class="form-group">
+                <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                <div class="">
+                    {{ field|attr:"class:form-control" }}
+                    {% if field.help_text %}
+                        <p class="help-block"><small>{{ field.help_text }}</small></p>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+    <div class="form-group">
+        <div class="">
+            <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+        </div>
+    </div>
+</form>
+<!-- 
+hard code edition
+<h1>New post</h1>
+<form class="form-horizontal" role="form" action="." method="post" enctype="multipart/form-data">{% csrf_token %}
+            
+            <div class="form-group">
+                <label class="control-label" for="id_title">Title</label>
+                    <input class="form-control" id="id_title" maxlength="200" name="title" type="text" />
+                    
+            </div>
+        
+    
+        
+            <div class="form-group">
+                <label class="control-label" for="id_text">Text</label>
+                    <textarea class="form-control" cols="40" id="id_text" name="text" rows="10">
+</textarea>
+
+            </div>
+        
+<label for="id_image">Image:</label> <input id="id_image" name="image" type="file" /><br>
+    
+    <div class="form-group">
+        <div class="">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+</form>
+ -->
+
 {% endblock %}

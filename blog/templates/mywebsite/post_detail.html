@@ -4,9 +4,10 @@
           <article>
             {% if user.is_authenticated %}
               <header>
-              <h1>{{ post.title }}</h1>
+              <h1>{{ post.title }}
               <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
               <a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+              </h1>
               </header>
             {% else %}
               <header><h1>{{ post.title }}</h1></header>
@@ -36,10 +37,10 @@
             {% for comment in post.comments.all %}
                 <div class="row">
                   <div class="col-md-11">
-                      {% if user.is_authenticated %}
-                        <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
-                      {% endif %}
                     <p>{{ comment.text|linebreaks }}</p>
+                    {% if user.is_authenticated %}
+                      <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+                    {% endif %}
                     <footer>
                     <small><b>{{ comment.author }}</b> Commented on: {{ comment.created_date }}</small>
                     </footer>
@@ -52,9 +53,38 @@
             {% endfor %}            
           </div>
 
-          <form method="POST" class="post-form">{% csrf_token %}
-          <h3>Have your say </h3>
-            {{ form.as_p }}
-              <button type="submit" class="btn btn-primary">Send Message</button>
-          </form>
+
+          <h3>Leave Your Comments Here </h3>
+{% load i18n widget_tweaks %}
+<form class="form-horizontal" role="form" action="." method="post" enctype="multipart/form-data">{% csrf_token %}
+    {% for field in form %}
+        {% if field.errors %}
+            <div class="form-group has-error">
+                <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                <div class="">
+                    {{ field|attr:"class:form-control" }}
+                    <span class="help-block">
+                        {% for error in  field.errors %}{{ error }}{% endfor %}
+                    </span>
+                </div>
+            </div>
+        {% else %}
+            <div class="form-group">
+                <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                <div class="">
+                    {{ field|attr:"class:form-control" }}
+                    {% if field.help_text %}
+                        <p class="help-block"><small>{{ field.help_text }}</small></p>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+    <div class="form-group">
+        <div class="">
+            <button type="submit" class="btn btn-primary">{% trans "Send Message" %}</button>
+        </div>
+    </div>
+</form>
+
 {% endblock %}
